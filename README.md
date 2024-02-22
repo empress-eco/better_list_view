@@ -1,6 +1,8 @@
+<div align="center">
+
 # Better ListView: Enhance Your Empress List View Experience
 
-![Better ListView Logo](https://grow.empress.eco/uploads/default/original/2X/1/1f1e1044d3864269d2a613577edb9763890422ab.png
+<img src="https://grow.empress.eco/uploads/default/original/2X/1/1f1e1044d3864269d2a613577edb9763890422ab.png" alt="Logo" width="80" height="80">
 
 Welcome to **Better ListView**, a compact, feature-rich plugin that revolutionizes your Empress list view customization experience.
 
@@ -9,6 +11,10 @@ Explore the Docs: [Documentation](https://grow.empress.eco/)
 Report Bug: [Report Issue](https://github.com/empress-eco/better_list_view/issues)
 ·
 Request Feature: [Request Feature](https://github.com/empress-eco/better_list_view/issues)
+
+</div>
+
+
 
 ## About The Project
 
