@@ -1,308 +1,69 @@
-# Frappe Better List View
+# Better ListView: Enhance Your Empress List View Experience
 
-A small **Frappe** list view plugin that allows the customization.
+![Better ListView Logo](https://grow.empress.eco/uploads/default/original/2X/1/1f1e1044d3864269d2a613577edb9763890422ab.png
 
----
+Welcome to **Better ListView**, a compact, feature-rich plugin that revolutionizes your Empress list view customization experience.
 
-### Table of Contents
-- [Requirements](#requirements)
-- [Setup](#setup)
-  - [Install](#install)
-  - [Update](#update)
-  - [Uninstall](#uninstall)
-- [Available Options](#available-options)
-- [Example](#example)
-- [Issues](#issues)
-- [License](#license)
+Explore the Docs: [Documentation](https://grow.empress.eco/)
+·
+Report Bug: [Report Issue](https://github.com/empress-eco/better_list_view/issues)
+·
+Request Feature: [Request Feature](https://github.com/empress-eco/better_list_view/issues)
 
----
+## About The Project
 
-### Requirements
-- Frappe >= v12.0.0
+**Better ListView** is an empowering tool designed to transform your Empress list view customization process. It is engineered for developers and users seeking enhanced control over their list views, offering an array of customization options that make static, unmodifiable list views a thing of the past.
 
----
+### Key Features
 
-### Setup
+- Fetch additional fields without display
+- Introduce query filters
+- Customize rows per page
+- Modify data before display
+- Customize row background color
 
-⚠️ *Important* ⚠️
+## Technical Stack and Setup Instructions
 
-*Do not forget to replace [sitename] with the name of your site in all commands.*
+**Better ListView** is built on the Framework. It requires Empress version v12.0.0 or above.
 
-#### Install
-1. Go to bench directory
+### Installation
 
-```
-cd ~/frappe-bench
-```
+Follow these straightforward steps to set up a development environment:
 
-2. Get plugin from Github
+1. Open your terminal and navigate to your bench directory:
+    ```sh
+    cd ~/Empress-bench
+    ```
+2. Clone the plugin from Github using the following command:
+    ```sh
+    bench get-app https://github.com/empress-eco/better_list_view.git
+    ```
+3. Build the plugin with:
+    ```sh
+    bench build --app Empress_better_list_view
+    ```
+4. Install the plugin on your chosen site (replace `[sitename]` with your site's name):
+    ```sh
+    bench --site [sitename] install-app Empress_better_list_view
+    ```
+5. Begin your customization journey! Refer to the usage guide below for detailed instructions.
 
-*(Required only once)*
+## Usage
 
-```
-bench get-app https://github.com/kid1194/frappe-better-list-view
-```
+Once installed, Better ListView allows you to control the appearance and functionality of your list views. You can fetch additional fields, apply extra filters, adjust the rows per page, and more. For detailed usage instructions and code examples, please refer to the [original README](https://github.com/empress-eco/better_list_view/blob/main/README.md).
 
-3. Build plugin
+## Contribution Guidelines
 
-*(Required only once)*
+Your contributions are warmly welcomed and appreciated! Here's how you can contribute:
 
-```
-bench build --app frappe_better_list_view
-```
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-4. Install plugin on a specific site
+## License and Acknowledgements
 
-```
-bench --site [sitename] install-app frappe_better_list_view
-```
+This project is licensed under the MIT License. Your contributions will also be licensed under the MIT License.
 
-5. Check the [Available Options](#available-options) and [Example](#example)
-
-#### Update
-1. Go to app directory
-
-```
-cd ~/frappe-bench/apps/frappe_better_list_view
-```
-
-2. Get updates from Github
-
-```
-git pull
-```
-
-3. Go to bench directory
-
-```
-cd ~/frappe-bench
-```
-
-4. Build plugin
-
-```
-bench build --app frappe_better_list_view
-```
-
-5. Update a specific site
-
-```
-bench --site [sitename] migrate
-```
-
-6. (Optional) Restart bench
-
-```
-bench restart
-```
-
-#### Uninstall
-1. Go to bench directory
-
-```
-cd ~/frappe-bench
-```
-
-2. Uninstall plugin from a specific site
-
-```
-bench --site [sitename] uninstall-app frappe_better_list_view
-```
-
-3. Remove plugin from bench
-
-```
-bench remove-app frappe_better_list_view
-```
-
-4. (Optional) Restart bench
-
-```
-bench restart
-```
-
----
-
-### Available Options
-#### 1. `query_fields`
-
-List of additional fields to fetch but not display.
-
-**Example:**
-```
-['is_approved', 'is_paid']
-```
-
-#### 2. `query_filters`
-
-List of additional filters for the fetch query.
-
-**Example:**
-```
-{is_approved: 1, is_paid: 0}
-```
---OR--
-```
-[['is_approved', '=', 1], ['is_paid', '=', 0]]
-```
-
-#### 3. `page_length`
-
-Number of rows to display per page.
-
-**Example:**
-```
-50
-```
-
-#### 4. `parser`
-
-Function to modify the list data before display.
-
-**Arguments:** `data`, `render`, `error`
-
-⚠️ *Important* ⚠️
-1. Must call `render()` after modification is done to render the list.
-2. Must call `error()` to revert back to original data and render the list.
-3. Parser function is called inside `try/catch` and if an error is caught, original data will be rendered.
-
-**Examples:**
-```
-function(data, render, error) {
-    let names = [];
-    data.forEach(function(row) {
-        names.push(row.name);
-    });
-    frappe.db.get_list('Doctype', {
-        fields: ['name', 'value'],
-        filters: {
-            name: ['in', names],
-        }
-    }).then(function(list) {
-        list.forEach(function(vals) {
-            data.forEach(function(row) {
-                if (vals.name === row.name) {
-                    row.value = vals.value;
-                }
-            });
-        });
-        // Render modified data
-        render();
-    }).catch(function(e) {
-        console.error(e.message, e.stack);
-        // Render original data instead
-        error();
-    });
-}
-```
-
-#### 5. `set_row_background`
-
-Function to set the background color of row, (css, hex, rgb, rgba, hsla).
-
-**Arguments:** `row`
-
-**Return:** `String`, `Null`
-
-**CSS Colors:**
-<p align="center">
-    <img src="https://github.com/kid1194/frappe-better-list-view/blob/main/images/row_bg.png?raw=true" alt="Frappe Better List View"/>
-</p>
-
-**Examples:**
-```
-function(row) {
-    if (cint(row.cost) > 1000) return 'danger';
-    if (cint(row.cost) > 800) return '#ffeeba';
-    if (cint(row.cost) > 600) return 'rgba(190,229,235,1)';
-    if (cint(row.cost) < 300) return 'hsla(133.7,41.2%,83.3%,1)';
-}
-```
-
----
-
-### Example
-
-```
-frappe.listview_settings['DocType'] = {
-    --------------------------------------------------------------------
-    --- Plugin Options -------------------------------------------------
-    --------------------------------------------------------------------
-    
-    // Columns to fetch but not display
-    query_fields: ['is_approved', 'is_paid'],
-    // Additional filters (array or object) for fetch query
-    query_filters: {
-        is_approved: 1,
-        is_paid: 1,
-    },
-    // Only 50 rows will be displayed per page
-    page_length: 50,
-    // List data modify function 
-    parser: function(data, render, error) {
-        let names = [];
-        data.forEach(function(row) {
-            names.push(row.name);
-        });
-        if (!names.length) {
-            return render();
-        }
-        frappe.db.get_list('Doctype', {
-            fields: ['name', 'price'],
-            filters: {
-                name: ['in', names],
-                is_approved: 1,
-            }
-        }).then(function(list) {
-            list.forEach(function(vals) {
-                data.forEach(function(row) {
-                    if (vals.name === row.name) {
-                        row.price = vals.price;
-                    }
-                });
-            });
-            // Render modified data
-            render();
-        }).catch(function(e) {
-            console.error(e.message, e.stack);
-            // Render original data instead
-            error();
-        });
-    },
-    set_row_background: function(row) {
-        if (!cint(row.is_approved)) return 'info';
-    },
-    
-    --------------------------------------------------------------------
-    
-    // The fields listed above can be used inside the following functions
-    get_indicator: function(doc) {
-        if (doc.is_paid) {
-            return [__('Paid'), 'blue', 'is_paid,=,Yes|is_approved,=,Yes'];
-        }
-        if (doc.is_approved) {
-            return [__('Approved'), 'green', 'is_paid,=,No|is_approved,=,Yes'];
-        }
-        return [__('Pending'), 'gray', 'is_paid,=,No|is_approved,=,No'];
-    },
-    formatters: {
-        name: function(value, field, doc) {
-            let html = value;
-            if (doc.is_approved) {
-                html += ' <span class="fa fa-check"></span>';
-            }
-            return html;
-        },
-    },
-};
-```
-
----
-
-### Issues
-If you find bug in the plugin, please create a [bug report](https://github.com/kid1194/frappe-better-list-view/issues/new?assignees=kid1194&labels=bug&template=bug_report.md&title=%5BBUG%5D) and let us know about it.
-
----
-
-### License
-This repository has been released under the [MIT License](https://github.com/kid1194/frappe-better-list-view/blob/main/LICENSE).
+We express our profound gratitude to the Empress Community. Their innovative tools and dedicated support have been instrumental in powering this project. We deeply appreciate their pioneering work and continued assistance. Thank you to all contributors and users of Better ListView for your constructive feedback and support. Your engagement helps us continuously improve and deliver a valuable tool to the community.
